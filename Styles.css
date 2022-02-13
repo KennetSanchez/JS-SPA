@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 body{
     background-color: white;
-=======
-body{
-    background-color: white;
->>>>>>> Stashed changes
+    visibility: visible;
 }

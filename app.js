@@ -1,9 +1,7 @@
-<<<<<<< Updated upstream
-=======
 var usersEmail = [],
   usersPasswords = [];
+var currentEmail, currentPassword;
 
->>>>>>> Stashed changes
 const router = async () => {
   let header = null || document.getElementById("header_container");
   const content = null || document.getElementById("page_container");
@@ -31,8 +29,56 @@ window.addEventListener("hashchange", router);
 
 window.addEventListener("load", router);
 
-<<<<<<< Updated upstream
-=======
+//"Edit" section
+let Edit = {
+  render: async () => {
+    let view = `
+          <section id = "bothFields">
+            <label style ="font-size: 50px;">Edit profile information</label>
+            </br>
+            </br>
+              <div>
+                <label>Email: ${currentEmail}</label>
+                <button style="margin-left: 10px" id="editEmailBtn">Edit</button>
+              </div>
+            </br>
+            </br>
+
+              <div>
+                <label>Password: ${currentPassword}</label>
+                <button style="margin-left: 10px" id ="editPassBtn">Edit</button>
+              </div>
+          </section>
+          </br>
+          </br>
+
+          <section id= "editField"}>
+            <input id = "input" type="text"/>
+            <button style="margin-left: 10px">Update</button>
+          </section>
+          </br>
+          </br>
+
+          `;
+
+    return view;
+  },
+  after_render: async () => {
+    document.getElementById("editField").style.visibility = "hidden";
+    let input = document.getElementById("input");
+
+    document.getElementById("editEmailBtn").addEventListener("click", () => {
+      document.getElementById("editField").style.visibility = "visible";
+      input.value = currentEmail;
+    });
+
+    document.getElementById("editPassBtn").addEventListener("click", () => {
+      document.getElementById("editField").style.visibility = "visible";
+      input.value = currentPassword;
+    });
+  },
+};
+
 //Login
 let Login = {
   render: async () => {
@@ -75,13 +121,12 @@ let Login = {
         let email = document.getElementById("emailLogin_input");
         let pass = document.getElementById("passLogin_input");
 
-
         if (usersEmail.length > 0 && usersPasswords.length > 0) {
           if ((email.value == "") | (pass.value == "")) {
             alert(`The fields cannot be empty`);
           } else {
-            let currentEmail = email.value;
-            let currentPassword = pass.value;
+            currentEmail = email.value;
+            currentPassword = pass.value;
 
             let emailRegistered = false;
             let passRegistered = false;
@@ -102,8 +147,8 @@ let Login = {
               alert(
                 "Something went wrong, the email or password might be wrong"
               );
-            }else{
-
+            } else {
+              window.location.href = "/#/edit";
             }
           }
         } else {
@@ -112,19 +157,11 @@ let Login = {
       });
   },
 };
-
-//
-
->>>>>>> Stashed changes
 //Register
 
 let Register = {
   render: async () => {
-<<<<<<< Updated upstream
-    return /*html*/ `
-=======
     return `
->>>>>>> Stashed changes
     <section class="section">
         <div class="field">
             <p class="control has-icons-left has-icons-right">
@@ -180,13 +217,9 @@ let Register = {
         ) {
           alert(`The fields cannot be empty`);
         } else {
-<<<<<<< Updated upstream
-          alert(`User with email ${email.value} was successfully submitted!`);
-=======
           alert(`User with email ${email.value} was successfully registered!`);
           usersEmail.push(email.value);
           usersPasswords.push(pass.value);
->>>>>>> Stashed changes
         }
       });
   },
@@ -219,13 +252,11 @@ let Navbar = {
                           <a class="navbar-item" href="/#/secret">
                               Secret
                           </a>
-<<<<<<< Updated upstream
-=======
+
                           <a class="navbar-item" href="/#/login">
                               Login
                           </a>
                           
->>>>>>> Stashed changes
                       </div>
                       <div class="navbar-end">
                           <div class="navbar-item">
@@ -233,13 +264,7 @@ let Navbar = {
                                   <a class="button is-primary" href="/#/register">
                                       <strong>Sign up</strong>
                                   </a>
-<<<<<<< Updated upstream
-                                  <a class="button is-light">
-                                      Log in
-                                  </a>
-=======
                                   
->>>>>>> Stashed changes
                               </div>
                           </div>
                       </div>
@@ -335,50 +360,6 @@ let Bottombar = {
   },
   after_render: async () => {},
 };
-<<<<<<< Updated upstream
-
-//Home
-
-let getPostsList = async () => {
-  const options = {
-     method: 'GET',
-     headers: {
-         'Content-Type': 'application/json'
-     }
- };
- try {
-     const response = await fetch(`https://5bb634f6695f8d001496c082.mockapi.io/api/posts`, options)
-     const json = await response.json();
-     // console.log(json)
-     return json
- } catch (err) {
-     console.log('Error getting documents', err)
- }
-}
-
-
-let Home = {
-  render : async () => {
-    let posts = await getPostsList()
-    let view =  `
-        <section class="section">
-            <h1> Home </h1>
-            <ul>
-                ${ posts.map(post => 
-                    /*html*/`<li><a href="#/p/${post.id}">${post.title}</a></li>`
-                    ).join('\n ')
-                }
-            </ul>
-        </section>
-    `
-    return view
-}
-, after_render: async () => {
-}
-
-};
-
-=======
 
 //Home
 
@@ -423,7 +404,6 @@ let Home = {
   after_render: async () => {},
 };
 
->>>>>>> Stashed changes
 // Error 404
 let Error404 = {
   render: async () => {
@@ -442,8 +422,6 @@ const routes = {
   "/about": About,
   "/p/:id": PostShow,
   "/register": Register,
-<<<<<<< Updated upstream
-=======
   "/login": Login,
->>>>>>> Stashed changes
+  "/edit": Edit,
 };

@@ -24,19 +24,37 @@ window.addEventListener("hashchange", router);
 
 window.addEventListener("load", router);
 
-
 parseRequestURL: () => {
-    let url = location.hash.slice(1).toLowerCase() || "/";
-    let r = url.split("/");
-    let request = {
-      resource: null,
-      id: null,
-      verb: null,
-    };
-    request.resource = r[1];
-    request.id = r[2];
-    request.verb = r[3];
-  
-    return request;
+  let url = location.hash.slice(1).toLowerCase() || "/";
+  let r = url.split("/");
+  let request = {
+    resource: null,
+    id: null,
+    verb: null,
   };
-  
+  request.resource = r[1];
+  request.id = r[2];
+  request.verb = r[3];
+
+  return request;
+};
+
+let About = {
+    render : async () => {
+        let view =  `
+            <section class="section">
+                <h1> About </h1>
+                <button id="myBtn"> Button</button>
+            </section>
+        `
+        return view
+    },
+    after_render: async () => {
+        document.getElementById("myBtn").addEventListener ("click",  () => {
+            alert('Button working')
+        })
+    }
+
+}
+
+export default About;

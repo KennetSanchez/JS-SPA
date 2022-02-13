@@ -1,100 +1,100 @@
-
-
 const router = async () => {
   let header = null || document.getElementById("header_container");
   const content = null || document.getElementById("page_container");
   const footer = null || document.getElementById("footer_container");
 
-  let request = utils.parseRequestURL;
+  let request = parseRequestURL();
 
   let parsedURL =
-  (request.resource ? "/" + request.resource : "/") +
-  (request.id ? "/:id" : "") +
-  (request.verb ? "/" + request.verb : "");
+    (request.resource ? "/" + request.resource : "/") +
+    (request.id ? "/:id" : "") +
+    (request.verb ? "/" + request.verb : "");
 
-  let page = routes[parsedURL] ? routes[parsedURL] : Error404;
-
-
-  
   header.innerHTML = await Navbar.render();
   await Navbar.after_render();
   footer.innerHTML = await Bottombar.render();
   await Bottombar.after_render();
+
+  let page = routes[parsedURL] ? routes[parsedURL] : Error404;
+
   content.innerHTML = await page.render();
   await page.after_render();
-
 };
 
 window.addEventListener("hashchange", router);
 
 window.addEventListener("load", router);
 
-
 //Register
-let Register = {
 
+let Register = {
   render: async () => {
-      return `
-          <section class="section">
-              <div class="field">
-                  <p class="control has-icons-left has-icons-right">
-                      <input class="input" id="email_input" type="email" placeholder="Enter your Email">
-                      <span class="icon is-small is-left">
-                          <i class="fas fa-envelope"></i>
-                      </span>
-                      <span class="icon is-small is-right">
-                          <i class="fas fa-check"></i>
-                      </span>
-                  </p>
-              </div>
-              <div class="field">
-                  <p class="control has-icons-left">
-                      <input class="input" id="pass_input" type="password" placeholder="Enter a Password">
-                      <span class="icon is-small is-left">
-                          <i class="fas fa-lock"></i>
-                      </span>
-                  </p>
-              </div>
-              <div class="field">
-                  <p class="control has-icons-left">
-                      <input class="input" id="repeat_pass_input" type="password" placeholder="Enter the same Password again">
-                      <span class="icon is-small is-left">
-                          <i class="fas fa-lock"></i>
-                      </span>
-                  </p>
-              </div>
-              <div class="field">
-                  <p class="control">
-                      <button class="button is-primary" id="register_submit_btn">
-                      Register
-                      </button>
-                  </p>
-              </div>
-          </section>
-      `
-  }
- 
-  , after_render: async () => {
-      document.getElementById("register_submit_btn").addEventListener ("click",  () => {
-          let email       = document.getElementById("email_input");
-          let pass        = document.getElementById("pass_input");
-          let repeatPass  = document.getElementById("repeat_pass_input");
-          if (pass.value != repeatPass.value) {
-              alert (`The passwords dont match`)
-          } else if (email.value =='' | pass.value == '' | repeatPass == '') {
-              alert (`The fields cannot be empty`)
-          } 
-          else {
-              alert(`User with email ${email.value} was successfully submitted!`)
-          }    
-      })
-  }
-}
+    return /*html*/ `
+    <section class="section">
+        <div class="field">
+            <p class="control has-icons-left has-icons-right">
+                <input class="input" id="email_input" type="email" placeholder="Enter your Email">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                </span>
+                <span class="icon is-small is-right">
+                    <i class="fas fa-check"></i>
+                </span>
+            </p>
+        </div>
+        <div class="field">
+            <p class="control has-icons-left">
+                <input class="input" id="pass_input" type="password" placeholder="Enter a Password">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                </span>
+            </p>
+        </div>
+        <div class="field">
+            <p class="control has-icons-left">
+                <input class="input" id="repeat_pass_input" type="password" placeholder="Enter the same Password again">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                </span>
+            </p>
+        </div>
+        <div class="field">
+            <p class="control">
+                <button class="button is-primary" id="register_submit_btn">
+                Register
+                </button>
+            </p>
+        </div>
+    </section>
+`;
+  },
+
+  after_render: async () => {
+    document
+      .getElementById("register_submit_btn")
+      .addEventListener("click", () => {
+        let email = document.getElementById("email_input");
+        let pass = document.getElementById("pass_input");
+        let repeatPass = document.getElementById("repeat_pass_input");
+        if (pass.value != repeatPass.value) {
+          alert(`The passwords dont match`);
+        } else if (
+          (email.value == "") |
+          (pass.value == "") |
+          (repeatPass == "")
+        ) {
+          alert(`The fields cannot be empty`);
+        } else {
+          alert(`User with email ${email.value} was successfully submitted!`);
+        }
+      });
+  },
+};
 
 //Navbar
 let Navbar = {
   render: async () => {
-      let view =  /*html*/`
+    let view = /*html*/ `
            <nav class="navbar" role="navigation" aria-label="main navigation">
               <div class="container">
                   <div class="navbar-brand">
@@ -134,87 +134,83 @@ let Navbar = {
                   </div>
               </div>
           </nav>
-      `
-      return view
+      `;
+    return view;
   },
-  after_render: async () => { }
-
-}
-
+  after_render: async () => {},
+};
 
 //Post show
 let getPost = async (id) => {
   const options = {
-     method: 'GET',
-     headers: {
-         'Content-Type': 'application/json'
-     }
- };
- try {
-     const response = await fetch(`https://5bb634f6695f8d001496c082.mockapi.io/api/posts/` + id, options)
-     const json = await response.json();
-     // console.log(json)
-     return json
- } catch (err) {
-     console.log('Error getting documents', err)
- }
-}
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  try {
+    const response = await fetch(
+      `https://5bb634f6695f8d001496c082.mockapi.io/api/posts/` + id,
+      options
+    );
+    const json = await response.json();
+    // console.log(json)
+    return json;
+  } catch (err) {
+    console.log("Error getting documents", err);
+  }
+};
 
 let PostShow = {
+  render: async () => {
+    let request = Utils.parseRequestURL();
+    let post = await getPost(request.id);
 
-  render : async () => {
-      let request = Utils.parseRequestURL()
-      let post = await getPost(request.id)
-      
-      return /*html*/`
+    return `
           <section class="section">
               <h1> Post Id : ${post.id}</h1>
               <p> Post Title : ${post.title} </p>
               <p> Post Content : ${post.content} </p>
               <p> Post Author : ${post.name} </p>
           </section>
-      `
-  }
-  , after_render: async () => {
-  }
-}
-
-//Utils
-const utils = {
-  parseRequestURL: () => {
-    let url = location.hash.slice(1).toLowerCase() || "/";
-    let r = url.split("/");
-    let request = {
-      resource: null,
-      id: null,
-      verb: null,
-    };
-    request.resource = r[1];
-    request.id = r[2];
-    request.verb = r[3];
-
-    return request;
+      `;
   },
+  after_render: async () => {},
 };
+
+//Parse
+
+function parseRequestURL() {
+  let url = location.hash.slice(1).toLowerCase() || "/";
+  let r = url.split("/");
+  let request = {
+    resource: null,
+    id: null,
+    verb: null,
+  };
+  request.resource = r[1];
+  request.id = r[2];
+  request.verb = r[3];
+  return request;
+}
 
 //About
 let About = {
-  render : async () => {
-      let view =  `
+  render: async () => {
+    let view = `
           <section class="section">
               <h1> About </h1>
           </section>
-      `
-      return view
+      `;
+    return view;
   },
-  after_render: async () => {}
-      
-}
+  after_render: async () => {},
+};
 
 //Bottom bar
 let Bottombar = {
   render: async () => {
-      let view =  /*html*/`
+    let view = /*html*/ `
       <footer class="footer">
           <div class="content has-text-centered">
               <p>
@@ -222,14 +218,14 @@ let Bottombar = {
               </p>
           </div>
       </footer>
-      `
-      return view
+      `;
+    return view;
   },
-  after_render: async () => { }
-
-}
+  after_render: async () => {},
+};
 
 //Home
+
 let getPostsList = async () => {
   const options = {
      method: 'GET',
@@ -247,41 +243,40 @@ let getPostsList = async () => {
  }
 }
 
-let Home = {
- render : async () => {
-     let posts = await getPostsList()
-     let view =  /*html*/`
-         <section class="section">
-             <h1> Home </h1>
-             <ul>
-                 ${ posts.map(post => 
-                     /*html*/`<li><a href="#/p/${post.id}">${post.title}</a></li>`
-                     ).join('\n ')
-                 }
-             </ul>
-         </section>
-     `
-     return view
- }
- , after_render: async () => {
- }
 
+let Home = {
+  render : async () => {
+    let posts = await getPostsList()
+    let view =  `
+        <section class="section">
+            <h1> Home </h1>
+            <ul>
+                ${ posts.map(post => 
+                    /*html*/`<li><a href="#/p/${post.id}">${post.title}</a></li>`
+                    ).join('\n ')
+                }
+            </ul>
+        </section>
+    `
+    return view
 }
+, after_render: async () => {
+}
+
+};
 
 // Error 404
 let Error404 = {
-
-  render : async () => {
-      let view =  /*html*/`
+  render: async () => {
+    let view = `
           <section class="section">
               <h1> 404 Error </h1>
           </section>
-      `
-      return view
-  }
-  , after_render: async () => {
-  }
-}
+      `;
+    return view;
+  },
+  after_render: async () => {},
+};
 
 const routes = {
   "/": Home,
